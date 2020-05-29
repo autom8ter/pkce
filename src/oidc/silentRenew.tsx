@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ApiClientService} from "../oidc/oidc";
+import {ApiClientService} from "./oidc";
 
 export const SilentCallback:React.FC = () => {
     const client = new ApiClientService()

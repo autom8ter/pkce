@@ -3,8 +3,8 @@ import './App.css';
 import {Navigation} from "./components/drawer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Container from '@material-ui/core/Container';
-import {Callback} from "./components/callback";
-import {SilentCallback} from "./components/silentRenew";
+import {Callback} from "./oidc/callback";
+import {SilentCallback} from "./oidc/silentRenew";
 
 const App:React.FC = () => {
     return (

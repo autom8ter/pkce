@@ -22,13 +22,13 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
 import {
-    ApiClientService,
+    OIDCService,
     OidcUser,
 } from "../oidc/oidc";
 import {JsonTree} from "./jsonTree";
 
 export const Navigation: React.FC = () => {
-    const client = new ApiClientService()
+    const client = new OIDCService()
     const classes = UseStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
@@ -42,9 +42,9 @@ export const Navigation: React.FC = () => {
     };
 
     const getUser = () => {
-        client.oidcService.getUser().then(u => {
+        client.getUser().then(u => {
             if (u) {
-                console.log(`user - ${u}`)
+                console.log(`user - ${u.toStorageString()}`)
                 setUsr(u)
             }
         }).catch(e => {
@@ -120,7 +120,7 @@ export const Navigation: React.FC = () => {
                 </List>
                 <List>
                     <ListItem button key="Login" onClick={() => {
-                        client.oidcService.login().catch(e => {
+                        client.login().catch(e => {
                             alert(`failed to login - ${e}`)
                         })
                     }}>
@@ -129,7 +129,7 @@ export const Navigation: React.FC = () => {
                     </ListItem>
 
                     <ListItem button key="Logout" onClick={() => {
-                        client.oidcService.logout().catch(e=> {
+                        client.logout().catch(e=> {
                             alert(`failed to get user - ${e}`)
                         })
                     }}>

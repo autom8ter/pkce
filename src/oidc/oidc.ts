@@ -8,55 +8,9 @@ import {
 
 const json = require('../config.json');
 
-export class ApiClientService {
-    public oidcService: OIDCService;
-    constructor() {
-        this.oidcService = new OIDCService();
-    }
-    private static async doFetch(url: string, method: string, token: string, body: any) {
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-        if (body) {
-            const response = await fetch(url, {
-                headers: headers,
-                method: method,
-                body: JSON.stringify(body),
-            })
-            return response.json()
-        }
-        const response = await fetch(url, {
-            headers: headers,
-            method: method,
-        })
-        return response.json()
-    }
-    public authFetch(url: string, method: string, body: any): Promise<any> {
-        return this.oidcService.getUser().then(user => {
-            if (user && user.access_token) {
-                return ApiClientService.doFetch(url, method, user.access_token, body).catch(error => {
-                    if (error.response.status === 401) {
-                        return this.oidcService.renewToken().then(renewedUser => {
-                            return ApiClientService.doFetch(url, method, renewedUser.access_token, null);
-                        });
-                    }
-                    throw error;
-                });
-            } else if (user) {
-                return this.oidcService.renewToken().then(renewedUser => {
-                    return ApiClientService.doFetch(url, method, renewedUser.access_token, body);
-                });
-            } else {
-                throw new Error('user is not logged in');
-            }
-        });
-    }
-}
-
 export interface OidcUser extends User{}
 
-class OIDCService {
+export class OIDCService {
     public userManager: UserManager;
     constructor() {
         this.userManager = new UserManager({

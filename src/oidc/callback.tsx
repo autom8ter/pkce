@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {ApiClientService} from "./oidc";
+import {OIDCService} from "./oidc";
 
 export const Callback:React.FC = () => {
-    const client = new ApiClientService()
-    client.oidcService.signinRedirectCallback().then(function () {
+    const client = new OIDCService()
+    client.signinRedirectCallback().then(() => {
         window.location.assign("/");
     }).catch(function (e) {
         console.error(e);

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {ApiClientService} from "./oidc";
+import {OIDCService} from "./oidc";
 
 export const SilentCallback:React.FC = () => {
-    const client = new ApiClientService()
-    client.oidcService.signinSilentCallback().catch(function (error) {
-        console.error(error);
+    const client = new OIDCService()
+    client.signinSilentCallback().catch(e => {
+        console.error(e);
     });
     return (
         <div>

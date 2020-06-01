@@ -6,24 +6,35 @@ import {
     SignoutResponse
 } from 'oidc-client';
 
-const json = require('../config.json');
-
 export interface OidcUser extends User{}
+
+export interface Config {
+    authority: string,
+    client_id: string,
+    redirect_uri: string,
+    post_logout_redirect_uri: string
+    silent_redirect_uri?: string
+    popup_redirect_uri?: string
+    scope?: string
+}
 
 export class OIDCService {
     public userManager: UserManager;
-    constructor() {
+    constructor(config: Config) {
+        if (config.scope) {
+            config.scope = "openid email profile"
+        }
         this.userManager = new UserManager({
-            authority: json.authority,
-            client_id: json.client_id,
-            redirect_uri: json.redirect_uri,
-            silent_redirect_uri: json.silent_redirect_uri,
-            popup_redirect_uri: json.popup_redirect_uri,
-            post_logout_redirect_uri: json.post_logout_redirect_uri,
+            authority: config.authority,
+            client_id: config.client_id,
+            redirect_uri: config.redirect_uri,
+            silent_redirect_uri: config.silent_redirect_uri,
+            popup_redirect_uri: config.popup_redirect_uri,
+            post_logout_redirect_uri: config.post_logout_redirect_uri,
             response_type: 'code',
             response_mode: 'query',
             prompt: 'none',
-            scope: json.scope,
+            scope: config.scope,
             revokeAccessTokenOnSignout: true
         });
         Log.logger = console;

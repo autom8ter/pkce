@@ -26,9 +26,18 @@ import {
     OidcUser,
 } from "../oidc/oidc";
 import {JsonTree} from "./jsonTree";
+const json = require('../config.json');
 
 export const Navigation: React.FC = () => {
-    const client = new OIDCService()
+    const client = new OIDCService({
+        authority: json.authority,
+        client_id: json.client_id,
+        redirect_uri: json.redirect_uri,
+        post_logout_redirect_uri: json.post_logout_redirect_uri,
+        silent_redirect_uri: json.silent_redirect_uri,
+        popup_redirect_uri: json.popup_redirect_uri,
+        scope: json.scope,
+    })
     const classes = UseStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
